@@ -4,10 +4,6 @@ import {Card} from "./Card";
 
 class SourceCardView extends Component {
 
-	renderElement() {
-
-	}
-
 	render() {
 		return (
 			<Card>

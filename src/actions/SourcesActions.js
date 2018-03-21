@@ -80,16 +80,13 @@ export const searchSources = ({searchTerm, array}) => {
 };
 
 export const onClickedSource = (source, selectedSources) => {
-	if(selectedSources.length === 0) {
+	let index = selectedSources.indexOf(source);
+	if (index === -1) {
 		selectedSources.push(source);
 	} else {
-		let index = selectedSources.indexOf(source);
-		if (index === -1) {
-			selectedSources.push(source);
-		} else {
-			selectedSources.splice(index);
-		}
+		selectedSources.splice(index, 1);
 	}
+
 	return {
 		type: ON_CLICKED_SOURCES,
 		payload: selectedSources

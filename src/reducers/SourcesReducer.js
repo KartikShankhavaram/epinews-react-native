@@ -32,7 +32,8 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, searchResultSources: action.payload};
 		case ON_CLICKED_SOURCES:
 			console.log('SELECTED-ARRAY', action.payload);
-			return { ...state, selectedSources: action.payload};
+			console.log(...state)
+			return {...state, selectedSources: action.payload};
 		default:
 			return state;
 	}

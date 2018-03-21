@@ -6,6 +6,11 @@ import { SearchBar } from "react-native-elements";
 import SourceCardView from "../components/SourceCardView";
 
 class SourceScreen extends Component {
+	constructor(props) {
+		super(props);
+		this.state = { selected: [] };
+	}
+
 	componentWillMount() {
 		this.props.setSourcesRefreshing(true);
 		this.props.getSources();
@@ -55,17 +60,24 @@ class SourceScreen extends Component {
 	}
 
 	renderBackground = (item) => {
-		console.log('ITEM', item);
-		console.log("renderBackground called with", this.props.selectedSources);
-		if(this.props.selectedSources.length === 0)
-			return {backgroundColor: '#FFF'};
-		let index = this.props.selectedSources.indexOf(item.id);
+		let index = this.state.selected.indexOf(item.id);
 		if(index === -1) {
 			return {backgroundColor: '#FFF'};
 		} else {
 			return {backgroundColor: '#CCC'};
 		}
 	};
+
+	onItemPress(item) {
+		this.props.onClickedSource(item.id, this.props.selectedSources);
+		let a = this.state.selected;
+		let index = a.indexOf(item.id);
+		if(index !== -1)
+			a.splice(index, 1);
+		else
+			a.push(item.id);
+		this.setState({selected: a});
+	}
 
 	render() {
 		console.log('Entered');
@@ -74,10 +86,11 @@ class SourceScreen extends Component {
 		return(
 				<FlatList
 					data={this.selectSourceArray()}
+					extraData={this.state}
 					renderItem={({ item }) => {
 						return(
 							<SourceCardView
-								onPress={() => {this.props.onClickedSource(item.id, this.props.selectedSources)}}
+								onPress={() => {this.onItemPress(item)}}
 								title={item.name}
 								desc={item.desc}
 								style={this.renderBackground(item)}
