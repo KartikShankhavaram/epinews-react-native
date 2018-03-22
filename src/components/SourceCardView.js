@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Switch, Text, TouchableNativeFeedback, View} from "react-native";
+import {Text, TouchableNativeFeedback, View} from "react-native";
 import {Card} from "./Card";
 
 class SourceCardView extends Component {
@@ -9,7 +9,7 @@ class SourceCardView extends Component {
 			<Card>
 				<TouchableNativeFeedback
 					onPress={this.props.onPress}
-					background={TouchableNativeFeedback.SelectableBackground()}
+					style={TouchableNativeFeedback.SelectableBackground()}
 					>
 					<View style={[this.props.style]}>
 						<Text style={styles.sourceNameStyle}>

@@ -1,6 +1,6 @@
 import {
 	LOAD_SOURCES, SEARCH_SOURCES_RESULT, SET_ERRORED_SOURCES, SET_REFRESHING_SOURCES,
-	ON_CLICKED_SOURCES
+	ON_CLICKED_SOURCES, SET_NO_SOURCES
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -16,7 +16,8 @@ const INITIAL_STATE = {
 		name: '',
 		desc: '',
 	}],
-	selectedSources: []
+	selectedSources: [],
+	noSources: true,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -32,8 +33,10 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, searchResultSources: action.payload};
 		case ON_CLICKED_SOURCES:
 			console.log('SELECTED-ARRAY', action.payload);
-			console.log(...state)
+			console.log(...state);
 			return {...state, selectedSources: action.payload};
+		case SET_NO_SOURCES:
+			return { ...state, noSources: action.payload};
 		default:
 			return state;
 	}

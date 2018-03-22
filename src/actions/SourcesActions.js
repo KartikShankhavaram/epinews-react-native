@@ -1,5 +1,6 @@
 import {
-	LOAD_SOURCES, ON_CLICKED_SOURCES, SEARCH_SOURCES_RESULT, SET_ERRORED_SOURCES, SET_REFRESHING_SOURCES,
+	LOAD_SOURCES, ON_CLICKED_SOURCES, SEARCH_SOURCES_RESULT, SET_ERRORED_SOURCES, SET_NO_SOURCES,
+	SET_REFRESHING_SOURCES,
 
 } from "./types";
 import * as axios from "axios";
@@ -23,7 +24,7 @@ export const getSources = () => {
 		dispatch({ type: SET_REFRESHING_SOURCES, payload: true});
 		axios.get('https://newsapi.org/v2/sources?apiKey=e9f9005bce6a4342ab3030555214596b&language=en')
 			.then((response) => onFetchSuccess(response, dispatch))
-			.catch((error) => onFetchFailed(dispatch));
+			.catch(() => onFetchFailed(dispatch));
 	}
 };
 
@@ -79,7 +80,7 @@ export const searchSources = ({searchTerm, array}) => {
 	}
 };
 
-export const onClickedSource = (source, selectedSources) => {
+export const onPressedSource = (source, selectedSources) => {
 	let index = selectedSources.indexOf(source);
 	if (index === -1) {
 		selectedSources.push(source);
@@ -91,4 +92,11 @@ export const onClickedSource = (source, selectedSources) => {
 		type: ON_CLICKED_SOURCES,
 		payload: selectedSources
 	};
+};
+
+export const setNoSources = (value) => {
+	return {
+		type: SET_NO_SOURCES,
+		payload: value
+	}
 };

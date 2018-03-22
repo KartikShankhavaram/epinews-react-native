@@ -1,25 +1,57 @@
 import React, {Component} from'react';
-import {ImageBackground, Text, View} from 'react-native';
+import {ImageBackground, Text, TouchableNativeFeedback, View} from 'react-native';
 import {Card} from "./Card";
+import LinearGradient from "react-native-linear-gradient";
+import FastImage from "react-native-fast-image";
 
 export default class NewsCardView extends Component {
-	render() {
-		return(
-			<Card style={{ height: 200, elevation: 5}}>
-				<ImageBackground
-					source={{uri: "https://si.wsj.net/public/resources/images/ON-CL576_wholef_G_20180312153223.jpg"}}
-					style={{flexGrow:1, height:null, width:null, flex: 1,}}
+
+	renderImage() {
+		if(this.props.imgSrc === null) {
+			return(
+				<LinearGradient colors={['transparent', 'grey']} style={{flex: 1}}>
+					<View style={styles.containerStyle}>
+						<Text style={styles.titleStyle}>
+							{this.props.title}
+						</Text>
+						<Text style={styles.authorStyle}>
+							{this.props.author}
+						</Text>
+					</View>
+				</LinearGradient>
+			);
+		} else {
+			return(
+				<FastImage
+					source={{uri: this.props.imgSrc}}
+					style={[{flexGrow:1, height:null, width:null, flex: 1,}, this.props.imageStyle]}
 				>
-				<View style={styles.containerStyle}>
-					<Text style={styles.titleStyle}>
-						Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-					</Text>
-					<Text style={styles.authorStyle}>
-						by Name Surname
-					</Text>
-				</View>
-				</ImageBackground>
-			</Card>
+					<LinearGradient colors={['transparent', 'grey']} style={{flex: 1}}>
+						<View style={styles.containerStyle}>
+							<Text style={styles.titleStyle}>
+								{this.props.title}
+							</Text>
+							<Text style={styles.authorStyle}>
+								{this.props.author}
+							</Text>
+						</View>
+					</LinearGradient>
+				</FastImage>
+			);
+		}
+	}
+
+	render() {
+		console.log('news card view props', this.props);
+		return(
+			<TouchableNativeFeedback
+				onPress={this.props.onPress}
+				background={TouchableNativeFeedback.SelectableBackground()}
+			>
+				<Card style={{ height: 200, elevation: 5}}>
+					{this.renderImage()}
+				</Card>
+			</TouchableNativeFeedback>
 		);
 	}
 }
@@ -28,12 +60,12 @@ const styles = {
 	titleStyle: {
 		fontSize: 20,
 		fontWeight: 'bold',
-		color: '#000',
+		color: 'white',
 		textAlign: 'left',
 	},
 	authorStyle: {
 		fontSize: 15,
-		color: "#333",
+		color: "white",
 		paddingBottom: 10,
 		textAlign: 'left',
 	},

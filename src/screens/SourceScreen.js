@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {getSources, searchSources, onClickedSource, setSourcesRefreshing} from "../actions";
+import {getSources, searchSources, onPressedSource, setSourcesRefreshing} from "../actions";
 import {FlatList, View, ActivityIndicator} from "react-native";
 import { SearchBar } from "react-native-elements";
 import SourceCardView from "../components/SourceCardView";
@@ -10,6 +10,10 @@ class SourceScreen extends Component {
 		super(props);
 		this.state = { selected: [] };
 	}
+
+	static navigationOptions = {
+		title: 'Select Sources'
+	};
 
 	componentWillMount() {
 		this.props.setSourcesRefreshing(true);
@@ -41,24 +45,6 @@ class SourceScreen extends Component {
 		return this.props.searchResultSources;
 	}
 
-	renderLoadingShimmer() {
-		console.log('REFRESHING', this.props.refreshingSources);
-		if(this.props.refreshingSources) {
-			console.log('REFRESHING', 'true');
-			return(
-				<View style={{
-					flex: 1,
-					justifyContent: 'center',
-					alignItems: 'center'
-				}}>
-					<ActivityIndicator
-						size={'large'}
-					/>
-				</View>
-			);
-		}
-	}
-
 	renderBackground = (item) => {
 		let index = this.state.selected.indexOf(item.id);
 		if(index === -1) {
@@ -84,18 +70,23 @@ class SourceScreen extends Component {
 		console.log("DATA-ARRAY", this.props.sources);
 		console.log("ARRAY-SELECTED", this.props.searchResultSources);
 		return(
+			<View>
 				<FlatList
 					data={this.selectSourceArray()}
 					extraData={this.state}
 					renderItem={({ item }) => {
-						return(
-							<SourceCardView
-								onPress={() => {this.onItemPress(item)}}
-								title={item.name}
-								desc={item.desc}
-								style={this.renderBackground(item)}
-							/>
-						);
+						if(item.name !== null && item.name !== undefined && item.name !== "") {
+							return (
+								<SourceCardView
+									onPress={() => {
+										this.onItemPress(item)
+									}}
+									title={item.name}
+									desc={item.desc}
+									style={this.renderBackground(item)}
+								/>
+							);
+						}
 					}}
 					onRefresh={this.handleRefresh}
 					refreshing={this.props.refreshingSources}
@@ -103,7 +94,7 @@ class SourceScreen extends Component {
 					ListHeaderComponent={this.renderHeader}
 					onEndReachedThreshold={50}
 				/>
-
+			</View>
 		);
 	}
 }
@@ -117,5 +108,5 @@ export default connect(mapStateToProps, {
 	getSources,
 	setSourcesRefreshing,
 	searchSources,
-	onClickedSource
+	onClickedSource: onPressedSource
 })(SourceScreen);
