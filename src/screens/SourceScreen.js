@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {getSources, searchSources, onPressedSource, setSourcesRefreshing} from "../actions";
+import {getSources, searchSources, onPressedSource, setSourcesRefreshing, getFromPersist} from "../actions";
 import {FlatList, View, ActivityIndicator} from "react-native";
 import { SearchBar } from "react-native-elements";
 import SourceCardView from "../components/SourceCardView";
+import {SAVE_KEY_SOURCES} from "../actions/types";
 
 class SourceScreen extends Component {
 	constructor(props) {
@@ -11,16 +12,19 @@ class SourceScreen extends Component {
 		this.state = { selected: [] };
 	}
 
-	static navigationOptions = {
-		title: 'Select Sources'
-	};
+	searchText = "";
 
 	componentWillMount() {
+
+		// Used to get sources from AsyncStorage
+		this.props.getFromPersist(SAVE_KEY_SOURCES);
+
 		this.props.setSourcesRefreshing(true);
 		this.props.getSources();
 	}
 
 	onSearchChangeText = (text) => {
+		this.searchText = text;
 		this.props.searchSources({ searchTerm: text, array: this.props.sources });
 	};
 
@@ -34,15 +38,17 @@ class SourceScreen extends Component {
 	};
 
 	handleRefresh = () => {
+		this.props.getFromPersist();
 		this.props.setSourcesRefreshing(true);
 		this.props.getSources();
 	};
 
 	selectSourceArray() {
-		if(this.props.searchResultSources[0].name === "") {
+		if(this.searchText !== "") {
+			return this.props.searchResultSources;
+		} else {
 			return this.props.sources;
 		}
-		return this.props.searchResultSources;
 	}
 
 	renderBackground = (item) => {
@@ -55,7 +61,7 @@ class SourceScreen extends Component {
 	};
 
 	onItemPress(item) {
-		this.props.onClickedSource(item.id, this.props.selectedSources);
+		console.log('SOURCE_PROPS', this.props);
 		let a = this.state.selected;
 		let index = a.indexOf(item.id);
 		if(index !== -1)
@@ -63,6 +69,7 @@ class SourceScreen extends Component {
 		else
 			a.push(item.id);
 		this.setState({selected: a});
+		this.props.onClickedSource(item.id, this.props.selectedSources);
 	}
 
 	render() {
@@ -108,5 +115,6 @@ export default connect(mapStateToProps, {
 	getSources,
 	setSourcesRefreshing,
 	searchSources,
-	onClickedSource: onPressedSource
+	onClickedSource: onPressedSource,
+	getFromPersist,
 })(SourceScreen);

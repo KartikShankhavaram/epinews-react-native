@@ -1,9 +1,10 @@
 import {
 	LOAD_SOURCES, ON_CLICKED_SOURCES, SEARCH_SOURCES_RESULT, SET_ERRORED_SOURCES, SET_NO_SOURCES,
-	SET_REFRESHING_SOURCES,
+	SET_REFRESHING_SOURCES, SET_SOURCES_FROM_STORAGE, STORING_SOURCE,
 
 } from "./types";
 import * as axios from "axios";
+import {AsyncStorage} from 'react-native';
 
 export const setSourcesRefreshing = (value) => {
 	return {
@@ -81,6 +82,7 @@ export const searchSources = ({searchTerm, array}) => {
 };
 
 export const onPressedSource = (source, selectedSources) => {
+	console.log('SOURCENULL', selectedSources);
 	let index = selectedSources.indexOf(source);
 	if (index === -1) {
 		selectedSources.push(source);
@@ -98,5 +100,47 @@ export const setNoSources = (value) => {
 	return {
 		type: SET_NO_SOURCES,
 		payload: value
+	}
+};
+
+export const saveToPersist = (key, data) => {
+	return (dispatch) => {
+		dispatch({ type: STORING_SOURCE, payload: true});
+		console.log('saving-data', data);
+		AsyncStorage.setItem(key, data)
+			.then(() => {
+				console.log('Data saved');
+			})
+			.catch(reason => {
+				/*SnackBar.show({
+					title: `Could not save: ${reason}`,
+					duration: SnackBar.LENGTH_SHORT,
+				});*/
+				dispatch({ type: STORING_SOURCE, payload: false});
+			});
+	}
+};
+
+export const getFromPersist = (key) => {
+	return (dispatch) => {
+		AsyncStorage.getItem(key).then((data) => {
+			console.log('async-data', data);
+			if(data !== null) {
+				dispatch({
+					type: SET_SOURCES_FROM_STORAGE,
+					payload: data
+				});
+			} else {
+				dispatch({
+					type: SET_SOURCES_FROM_STORAGE,
+					payload: []
+				});
+			}
+		}).catch((reason) => {
+			/*SnackBar.show({
+				title: 'Could not retrieve sources.',
+				duration: SnackBar.LENGTH_SHORT
+			});*/
+		});
 	}
 };

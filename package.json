@@ -15,6 +15,7 @@
     "react-native-linear-gradient": "^2.4.0",
     "react-native-swiper": "^1.5.13",
     "react-native-vector-icons": "latest",
+    "react-navigation": "latest",
     "react-redux": "latest",
     "redux": "latest",
     "redux-thunk": "latest"

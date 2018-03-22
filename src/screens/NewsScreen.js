@@ -16,7 +16,11 @@ class NewsScreen extends Component {
 	}
 
 	goToLink(uri) {
-		console.log('NEWS-URL', uri);
+		console.log('URI', uri);
+		console.log('navigationProps', this.props.navigation);
+		this.props.navigation.navigate('WebView',{
+			source: uri
+		});
 	}
 
 	handleRefresh = () => {
@@ -49,7 +53,7 @@ class NewsScreen extends Component {
 									author={item.author}
 									imgSrc={item.imgSrc}
 									onPress={() => {
-										this.goToLink(item.weblink)
+										this.goToLink(item.weblink);
 									}}
 								/>
 							);

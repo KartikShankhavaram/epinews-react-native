@@ -6,52 +6,65 @@ import FastImage from "react-native-fast-image";
 
 export default class NewsCardView extends Component {
 
-	renderImage() {
+	renderBody() {
 		if(this.props.imgSrc === null) {
 			return(
-				<LinearGradient colors={['transparent', 'grey']} style={{flex: 1}}>
-					<View style={styles.containerStyle}>
-						<Text style={styles.titleStyle}>
-							{this.props.title}
-						</Text>
-						<Text style={styles.authorStyle}>
-							{this.props.author}
-						</Text>
-					</View>
-				</LinearGradient>
+				<Card style={{height: 200, elevation: 0}}>
+					<ImageBackground
+						source={require('../../assets/placeholder-missing-image.png')}
+						style={[{flexGrow: 1, height: null, width: null, flex: 1,}, this.props.imageStyle]}
+					>
+						<TouchableNativeFeedback
+							onPress={this.props.onPress}
+							background={TouchableNativeFeedback.SelectableBackground()}
+						>
+							<LinearGradient colors={['transparent', 'grey']} style={{flex: 1}}>
+								<View style={styles.containerStyle}>
+									<Text style={styles.titleStyle}>
+										{this.props.title}
+									</Text>
+									<Text style={styles.authorStyle}>
+										{this.props.author}
+									</Text>
+								</View>
+							</LinearGradient>
+						</TouchableNativeFeedback>
+					</ImageBackground>
+				</Card>
 			);
 		} else {
 			return(
-				<FastImage
-					source={{uri: this.props.imgSrc}}
-					style={[{flexGrow:1, height:null, width:null, flex: 1,}, this.props.imageStyle]}
-				>
-					<LinearGradient colors={['transparent', 'grey']} style={{flex: 1}}>
-						<View style={styles.containerStyle}>
-							<Text style={styles.titleStyle}>
-								{this.props.title}
-							</Text>
-							<Text style={styles.authorStyle}>
-								{this.props.author}
-							</Text>
-						</View>
-					</LinearGradient>
-				</FastImage>
+				<Card style={{height: 200, elevation: 0}}>
+					<FastImage
+						source={{uri: this.props.imgSrc}}
+						style={[{flexGrow: 1, height: null, width: null, flex: 1,}, this.props.imageStyle]}
+					>
+						<TouchableNativeFeedback
+							onPress={this.props.onPress}
+							background={TouchableNativeFeedback.SelectableBackground()}
+						>
+							<LinearGradient colors={['transparent', 'grey']} style={{flex: 1}}>
+								<View style={styles.containerStyle}>
+									<Text style={styles.titleStyle}>
+										{this.props.title}
+									</Text>
+									<Text style={styles.authorStyle}>
+										{this.props.author}
+									</Text>
+								</View>
+							</LinearGradient>
+						</TouchableNativeFeedback>
+					</FastImage>
+				</Card>
 			);
 		}
 	}
 
 	render() {
-		console.log('news card view props', this.props);
 		return(
-			<TouchableNativeFeedback
-				onPress={this.props.onPress}
-				background={TouchableNativeFeedback.SelectableBackground()}
-			>
-				<Card style={{ height: 200, elevation: 5}}>
-					{this.renderImage()}
-				</Card>
-			</TouchableNativeFeedback>
+			<View>
+				{this.renderBody()}
+			</View>
 		);
 	}
 }

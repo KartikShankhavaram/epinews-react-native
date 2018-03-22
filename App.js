@@ -4,6 +4,22 @@ import ReduxThunk from 'redux-thunk';
 import {Provider} from "react-redux";
 import reducer from './src/reducers'
 import AllScreens from "./src/AllScreens";
+import {StackNavigator} from 'react-navigation';
+import NewsWebView from "./src/screens/NewsWebView";
+
+const RootStack = StackNavigator(
+	{
+		Main: {
+			screen: AllScreens,
+		},
+		WebView: {
+			screen: NewsWebView
+		}
+	},
+	{
+		initialRouteName: 'Main',
+	}
+);
 
 
 export default class App extends Component {
@@ -12,7 +28,7 @@ export default class App extends Component {
 
 		return (
 			<Provider store={store}>
-				<AllScreens />
+				<RootStack />
 			</Provider>
 		);
 	}

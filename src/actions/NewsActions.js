@@ -25,11 +25,16 @@ export const loadNews = (sources) => {
 
 const onStatusOK = (obj, dispatch, newsArray) => {
 	let rawArray = obj.articles;
+	console.log('RawArray', rawArray);
 
 	for (let object of rawArray) {
+		let author = object.author;
+		if(author !== null && author.startsWith('http')) {
+			author = "";
+		}
 		let article = {
 			title: object.title,
-			author: object.author,
+			author: author,
 			imgSrc: object.urlToImage,
 			weblink: object.url
 		};
