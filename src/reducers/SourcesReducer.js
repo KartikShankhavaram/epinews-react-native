@@ -1,6 +1,6 @@
 import {
 	LOAD_SOURCES, SEARCH_SOURCES_RESULT, SET_ERRORED_SOURCES, SET_REFRESHING_SOURCES,
-	ON_CLICKED_SOURCES, SET_NO_SOURCES, SET_SOURCES_FROM_STORAGE, STORING_SOURCE
+	ON_CLICKED_SOURCES, SET_NO_SOURCES, SET_SOURCES_FROM_STORAGE, STORING_SOURCE, SET_SAVED_SOURCES
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -30,18 +30,13 @@ export default (state = INITIAL_STATE, action) => {
 		case LOAD_SOURCES:
 			return { ...state, sources: action.payload};
 		case SEARCH_SOURCES_RESULT:
-			console.log('ACTION-PAYLOAD', action.payload);
 			return { ...state, searchResultSources: action.payload};
 		case ON_CLICKED_SOURCES:
-			console.log('SELECTED-ARRAY', action.payload);
-			console.log(...state);
 			return {...state, selectedSources: action.payload};
 		case SET_NO_SOURCES:
 			return { ...state, noSources: action.payload};
-		case SET_SOURCES_FROM_STORAGE:
+		case SET_SAVED_SOURCES:
 			return { ...state, selectedSources: action.payload};
-		case STORING_SOURCE:
-			return { ...state, storingSources: action.payload};
 		default:
 			return state;
 	}

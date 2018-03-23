@@ -15,16 +15,14 @@ class NewsScreen extends Component {
 		}
 	}
 
-	goToLink(uri) {
-		console.log('URI', uri);
-		console.log('navigationProps', this.props.navigation);
+	goToLink(item) {
 		this.props.navigation.navigate('WebView',{
-			source: uri
+			uri: item.uri,
+			source: item.source
 		});
 	}
 
 	handleRefresh = () => {
-		console.log('REFRESH-SOURCES', this.props.selectedSources);
 		if(this.props.selectedSources === undefined || this.props.selectedSources.length === 0) {
 			this.props.setNoSources(true);
 		} else {
@@ -34,7 +32,6 @@ class NewsScreen extends Component {
 	};
 
 	render() {
-		console.log('SELECTED-SOURCES', this.props.selectedSources);
 		return(
 			<View style={{flex: 1}} extraData={this.props.extraData}>
 				<View style={styles.selectSourceTextContainerStyle} extraData={this.props.extraData}>
@@ -53,7 +50,7 @@ class NewsScreen extends Component {
 									author={item.author}
 									imgSrc={item.imgSrc}
 									onPress={() => {
-										this.goToLink(item.weblink);
+										this.goToLink(item);
 									}}
 								/>
 							);

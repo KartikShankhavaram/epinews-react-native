@@ -25,7 +25,6 @@ export const loadNews = (sources) => {
 
 const onStatusOK = (obj, dispatch, newsArray) => {
 	let rawArray = obj.articles;
-	console.log('RawArray', rawArray);
 
 	for (let object of rawArray) {
 		let author = object.author;
@@ -33,6 +32,7 @@ const onStatusOK = (obj, dispatch, newsArray) => {
 			author = "";
 		}
 		let article = {
+			source: object.source.name,
 			title: object.title,
 			author: author,
 			imgSrc: object.urlToImage,
@@ -40,7 +40,6 @@ const onStatusOK = (obj, dispatch, newsArray) => {
 		};
 		newsArray.push(article);
 	}
-	console.log('NEWS-ARRAY', newsArray);
 	dispatch({type: SET_REFRESHING_NEWS, payload: false});
 	dispatch({type: LOAD_NEWS, payload: newsArray});
 };

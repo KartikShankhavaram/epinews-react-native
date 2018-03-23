@@ -1,7 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from "react-redux";
-import {getSources, searchSources, onPressedSource, setSourcesRefreshing, getFromPersist} from "../actions";
-import {FlatList, View, ActivityIndicator} from "react-native";
+import {
+	getSources, searchSources, onPressedSource, setSourcesRefreshing,
+	setSavedSources
+} from "../actions";
+import {FlatList, View, ActivityIndicator, AsyncStorage} from "react-native";
 import { SearchBar } from "react-native-elements";
 import SourceCardView from "../components/SourceCardView";
 import {SAVE_KEY_SOURCES} from "../actions/types";
@@ -17,10 +20,36 @@ class SourceScreen extends Component {
 	componentWillMount() {
 
 		// Used to get sources from AsyncStorage
-		this.props.getFromPersist(SAVE_KEY_SOURCES);
+		SourceScreen.fetch(SAVE_KEY_SOURCES)
+			.then((value) => {
+				console.log('VALUES', value);
+				let sources;
+				if(value !== null && value !== undefined) {
+					sources = JSON.parse(value);
+					console.log('GAINED-SOURCES', sources);
+				} else {
+					sources = [];
+				}
+				this.props.setSavedSources(sources);
+				this.setState({ selected: sources });
+				console.log('STATE', this.state);
+			});
 
 		this.props.setSourcesRefreshing(true);
 		this.props.getSources();
+	}
+
+	static async fetch(key) {
+		try {
+			let dataString = await AsyncStorage.getItem(key);
+			if(dataString !== null) {
+				const array = JSON.parse(dataString);
+				console.log('SAVED_ARRAY', array);
+				return array;
+			}
+		} catch(error) {
+			console.log(`Could not fetch because of ${error}`);
+		}
 	}
 
 	onSearchChangeText = (text) => {
@@ -38,7 +67,6 @@ class SourceScreen extends Component {
 	};
 
 	handleRefresh = () => {
-		this.props.getFromPersist();
 		this.props.setSourcesRefreshing(true);
 		this.props.getSources();
 	};
@@ -61,21 +89,20 @@ class SourceScreen extends Component {
 	};
 
 	onItemPress(item) {
-		console.log('SOURCE_PROPS', this.props);
-		let a = this.state.selected;
+		console.log('ON-CLICK', item);
+		let a = this.state.selected.slice();
+		console.log('ON-CLICK-STATE', a);
 		let index = a.indexOf(item.id);
 		if(index !== -1)
 			a.splice(index, 1);
 		else
 			a.push(item.id);
+		console.log('LOCAL-SELECTED', a);
 		this.setState({selected: a});
 		this.props.onClickedSource(item.id, this.props.selectedSources);
 	}
 
 	render() {
-		console.log('Entered');
-		console.log("DATA-ARRAY", this.props.sources);
-		console.log("ARRAY-SELECTED", this.props.searchResultSources);
 		return(
 			<View>
 				<FlatList
@@ -116,5 +143,5 @@ export default connect(mapStateToProps, {
 	setSourcesRefreshing,
 	searchSources,
 	onClickedSource: onPressedSource,
-	getFromPersist,
+	setSavedSources
 })(SourceScreen);

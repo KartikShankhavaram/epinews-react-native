@@ -1,13 +1,21 @@
 import React, {Component} from 'react';
 import {WebView} from 'react-native';
+import HeaderTitle from "../components/HeaderTitle";
 
 class NewsWebView extends Component {
+
+	static navigationOptions = ({ navigation }) => {
+		const {params} = navigation.state;
+		return {
+			headerTitle: <HeaderTitle title={params.source}/>,
+			headerTitleStyle :{textAlign: 'center',alignSelf:'center', marginRight: 56},
+		}
+	};
 
 	render() {
 
 		const { params } = this.props.navigation.state;
-		const uri = params.source;
-		console.log('WEBVIEW-URI', this.props.navigation.state);
+		const uri = params.uri;
 
 		return(
 			<WebView

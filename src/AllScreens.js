@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
-import {Keyboard} from 'react-native';
+import {Keyboard, AsyncStorage} from 'react-native';
 import NewsScreen from "./screens/NewsScreen";
 import SourceScreen from "./screens/SourceScreen";
 import {connect} from "react-redux";
-import {loadNews, saveToPersist} from "./actions";
+import {loadNews} from "./actions";
 import Swiper from 'react-native-swiper';
 import HeaderTitle from "./components/HeaderTitle";
 import {SAVE_KEY_SOURCES} from "./actions/types";
@@ -17,15 +17,28 @@ class AllScreens extends Component{
 	state = {extra: 0};
 
 	onIndexChanged(index) {
-		console.log('INDEX', index);
 		if(index === 0) {
 			Keyboard.dismiss();
-			this.props.saveToPersist(SAVE_KEY_SOURCES, this.props.selectedSources);
+			let dataString = JSON.stringify(this.props.selectedSources);
+			if(dataString !== '[]') {
+				AllScreens.save(SAVE_KEY_SOURCES, dataString)
+					.then(() => console.log('Saved!'));
+			}
 			if(!this.props.noSources) {
 				this.props.loadNews(this.props.sources);
 				a = this.state.extra + 1;
 				this.setState({extra: a});
 			}
+		}
+	}
+
+	static async save(key, data) {
+		console.log('saving...');
+		let dataString = JSON.stringify(data);
+		try {
+			await AsyncStorage.setItem(key, dataString);
+		} catch(error) {
+			console.log('Could not save.');
 		}
 	}
 
@@ -51,4 +64,4 @@ const mapStateToProps = (state) => {
 	return { sources, noSources, selectedSources };
 };
 
-export default connect(mapStateToProps, {loadNews, saveToPersist})(AllScreens);
+export default connect(mapStateToProps, {loadNews})(AllScreens);
