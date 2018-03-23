@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, WebView} from 'react-native';
+import {ActivityIndicator, View, WebView} from 'react-native';
 import HeaderTitle from "../components/HeaderTitle";
 
 class NewsWebView extends Component {
@@ -13,6 +13,16 @@ class NewsWebView extends Component {
 		}
 	};
 
+	renderLoadingView() {
+		return (
+			<ActivityIndicator
+				color='#bc2b78'
+				size='large'
+				styles={styles.activityIndicator}
+			/>
+		);
+	}
+
 	render() {
 
 		const { params } = this.props.navigation.state;
@@ -22,9 +32,18 @@ class NewsWebView extends Component {
 			<WebView
 				source={{uri: uri}}
 				style={{marginTop: 20}}
+				renderLoading={this.renderLoadingView}
+				startInLoadingState={true}
 			/>
 		);
 	}
 }
+
+const styles = {
+	activityIndicator: {
+		alignItems: 'center',
+		justifyContent: 'center'
+	}
+};
 
 export default NewsWebView;
