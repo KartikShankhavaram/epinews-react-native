@@ -18,7 +18,7 @@ class NewsWebView extends Component {
 			<ActivityIndicator
 				color='#bc2b78'
 				size='large'
-				styles={styles.activityIndicator}
+				style={styles.activityIndicator}
 			/>
 		);
 	}
