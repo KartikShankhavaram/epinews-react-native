@@ -54,3 +54,7 @@ buck-out/
 
 # API key
 secret.js
+
+# Keystore
+*.keystore
+*.jks

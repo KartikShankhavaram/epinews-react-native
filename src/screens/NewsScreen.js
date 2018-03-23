@@ -17,13 +17,13 @@ class NewsScreen extends Component {
 
 	goToLink(item) {
 		this.props.navigation.navigate('WebView',{
-			uri: item.uri,
+			uri: item.weblink,
 			source: item.source
 		});
 	}
 
 	handleRefresh = () => {
-		if(this.props.selectedSources === undefined || this.props.selectedSources.length === 0) {
+		if(this.props.selectedSources === null || this.props.selectedSources.length === 0) {
 			this.props.setNoSources(true);
 		} else {
 			this.props.setRefreshingNews(true);

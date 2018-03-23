@@ -22,17 +22,14 @@ class SourceScreen extends Component {
 		// Used to get sources from AsyncStorage
 		SourceScreen.fetch(SAVE_KEY_SOURCES)
 			.then((value) => {
-				console.log('VALUES', value);
 				let sources;
 				if(value !== null && value !== undefined) {
 					sources = JSON.parse(value);
-					console.log('GAINED-SOURCES', sources);
 				} else {
 					sources = [];
 				}
 				this.props.setSavedSources(sources);
 				this.setState({ selected: sources });
-				console.log('STATE', this.state);
 			});
 
 		this.props.setSourcesRefreshing(true);
@@ -44,11 +41,9 @@ class SourceScreen extends Component {
 			let dataString = await AsyncStorage.getItem(key);
 			if(dataString !== null) {
 				const array = JSON.parse(dataString);
-				console.log('SAVED_ARRAY', array);
 				return array;
 			}
 		} catch(error) {
-			console.log(`Could not fetch because of ${error}`);
 		}
 	}
 
@@ -89,15 +84,12 @@ class SourceScreen extends Component {
 	};
 
 	onItemPress(item) {
-		console.log('ON-CLICK', item);
 		let a = this.state.selected.slice();
-		console.log('ON-CLICK-STATE', a);
 		let index = a.indexOf(item.id);
 		if(index !== -1)
 			a.splice(index, 1);
 		else
 			a.push(item.id);
-		console.log('LOCAL-SELECTED', a);
 		this.setState({selected: a});
 		this.props.onClickedSource(item.id, this.props.selectedSources);
 	}

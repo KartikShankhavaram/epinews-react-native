@@ -22,7 +22,7 @@ class AllScreens extends Component{
 			let dataString = JSON.stringify(this.props.selectedSources);
 			if(dataString !== '[]') {
 				AllScreens.save(SAVE_KEY_SOURCES, dataString)
-					.then(() => console.log('Saved!'));
+					.then();
 			}
 			if(!this.props.noSources) {
 				this.props.loadNews(this.props.sources);
@@ -33,12 +33,10 @@ class AllScreens extends Component{
 	}
 
 	static async save(key, data) {
-		console.log('saving...');
 		let dataString = JSON.stringify(data);
 		try {
 			await AsyncStorage.setItem(key, dataString);
 		} catch(error) {
-			console.log('Could not save.');
 		}
 	}
 
