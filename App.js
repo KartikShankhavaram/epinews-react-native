@@ -6,6 +6,7 @@ import reducer from './src/reducers'
 import AllScreens from "./src/AllScreens";
 import {StackNavigator} from 'react-navigation';
 import NewsWebView from "./src/screens/NewsWebView";
+import './ReactotronConfig'
 
 const RootStack = StackNavigator(
 	{

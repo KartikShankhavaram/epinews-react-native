@@ -9,6 +9,6 @@ export const SEARCH_SOURCES_RESULT = 'search_sources_result';
 export const ON_CLICKED_SOURCES = 'on_clicked_sources';
 export const SET_SOURCES_FROM_STORAGE = 'set_sources_from_storage';
 export const SET_NO_SOURCES = 'set_no_sources';
-export const STORING_SOURCE = 'storing_sources';
+export const SET_SAVED_SOURCES = 'set_saved_sources';
 
 export const SAVE_KEY_SOURCES= 'save_key_sources';
