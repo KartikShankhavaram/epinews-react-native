@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, WebView} from 'react-native';
+import {ActivityIndicator, View, WebView} from 'react-native';
 import HeaderTitle from "../components/HeaderTitle";
 
 class NewsWebView extends Component {
@@ -8,10 +8,20 @@ class NewsWebView extends Component {
 		const {params} = navigation.state;
 		return {
 			headerTitle: <HeaderTitle title={params.source}/>,
-			headerTitleStyle :{textAlign: 'center',alignSelf:'center', marginRight: 56},
-			headerRight: <View />
+			headerTitleStyle :{textAlign: 'center',alignSelf:'center'},
+			headerRight: <View/>
 		}
 	};
+
+	renderLoadingView() {
+		return (
+			<ActivityIndicator
+				color='#bc2b78'
+				size='large'
+				style={styles.activityIndicator}
+			/>
+		);
+	}
 
 	render() {
 
@@ -22,9 +32,18 @@ class NewsWebView extends Component {
 			<WebView
 				source={{uri: uri}}
 				style={{marginTop: 20}}
+				renderLoading={this.renderLoadingView}
+				startInLoadingState={true}
 			/>
 		);
 	}
 }
+
+const styles = {
+	activityIndicator: {
+		alignItems: 'center',
+		justifyContent: 'center'
+	}
+};
 
 export default NewsWebView;
