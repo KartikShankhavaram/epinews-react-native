@@ -17,7 +17,7 @@ class NewsScreen extends Component {
 
 	goToLink(item) {
 		this.props.navigation.navigate('WebView',{
-			uri: item.uri,
+			uri: item.weblink,
 			source: item.source
 		});
 	}

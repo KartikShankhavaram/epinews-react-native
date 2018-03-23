@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {WebView} from 'react-native';
+import {View, WebView} from 'react-native';
 import HeaderTitle from "../components/HeaderTitle";
 
 class NewsWebView extends Component {
@@ -9,6 +9,7 @@ class NewsWebView extends Component {
 		return {
 			headerTitle: <HeaderTitle title={params.source}/>,
 			headerTitleStyle :{textAlign: 'center',alignSelf:'center', marginRight: 56},
+			headerRight: <View />
 		}
 	};
 
