@@ -4,6 +4,7 @@ import {
 
 } from "./types";
 import * as axios from "axios";
+import {API_KEY} from "../../env_var";
 
 export const setSourcesRefreshing = (value) => {
 	return {
@@ -22,7 +23,8 @@ export const setSourcesFetchErrored = (value) => {
 export const getSources = () => {
 	return (dispatch) => {
 		dispatch({ type: SET_REFRESHING_SOURCES, payload: true});
-		axios.get('https://newsapi.org/v2/sources?apiKey=e9f9005bce6a4342ab3030555214596b&language=en')
+		console.log('API_KEY', API_KEY);
+		axios.get(`https://newsapi.org/v2/sources?apiKey=${API_KEY}&language=en`)
 			.then((response) => onFetchSuccess(response, dispatch))
 			.catch(() => onFetchFailed(dispatch));
 	}

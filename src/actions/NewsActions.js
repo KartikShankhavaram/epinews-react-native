@@ -1,6 +1,6 @@
 import {LOAD_NEWS, SET_ERRORED_NEWS, SET_REFRESHING_NEWS} from "./types";
 import * as axios from "axios";
-import {API_KEY} from "../../secret";
+import {API_KEY} from "../../env_var";
 
 export const loadNews = (sources) => {
 	return (dispatch) => {
