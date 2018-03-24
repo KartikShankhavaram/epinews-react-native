@@ -1,8 +1,10 @@
-import {LOAD_NEWS, SET_ERRORED_NEWS, SET_REFRESHING_NEWS} from "./types";
+import {LOAD_NEWS, SET_ERRORED_NEWS, SET_REFRESHING_NEWS, SOURCES_LOADED_FROM_MEMORY} from "./types";
 import * as axios from "axios";
 import {API_KEY} from "../../env_var";
 
 export const loadNews = (sources) => {
+	console.log('news', 'loading...');
+	console.log('news_sources', sources);
 	return (dispatch) => {
 		let promises = [];
 		let newsArray = [];
@@ -19,8 +21,19 @@ export const loadNews = (sources) => {
 					}
 				}
 			}
+		).catch(
+			() => {
+				onRequestErrored(dispatch);
+			}
 		);
 	}
+};
+
+const onRequestErrored = (dispatch) => {
+	dispatch({type: SET_ERRORED_NEWS, payload: true});
+	dispatch({type: SET_REFRESHING_NEWS, payload: false});
+	dispatch({type: SOURCES_LOADED_FROM_MEMORY, payload: false});
+
 };
 
 const onStatusOK = (obj, dispatch, newsArray) => {
@@ -40,8 +53,10 @@ const onStatusOK = (obj, dispatch, newsArray) => {
 		};
 		newsArray.push(article);
 	}
+	console.log('news', newsArray);
 	dispatch({type: SET_REFRESHING_NEWS, payload: false});
 	dispatch({type: LOAD_NEWS, payload: newsArray});
+	dispatch({type: SOURCES_LOADED_FROM_MEMORY, payload: false});
 };
 
 export const setRefreshingNews = (value) => {

@@ -1,6 +1,6 @@
 import {
 	LOAD_SOURCES, SEARCH_SOURCES_RESULT, SET_ERRORED_SOURCES, SET_REFRESHING_SOURCES,
-	ON_CLICKED_SOURCES, SET_NO_SOURCES, SET_SOURCES_FROM_STORAGE, STORING_SOURCE, SET_SAVED_SOURCES
+	ON_CLICKED_SOURCES, SET_NO_SOURCES, SET_SAVED_SOURCES, SOURCES_LOADED_FROM_MEMORY
 } from "../actions/types";
 
 const INITIAL_STATE = {
@@ -18,7 +18,7 @@ const INITIAL_STATE = {
 	}],
 	selectedSources: [],
 	noSources: true,
-	storingSources: false,
+	loadFromMemory: false,
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -37,6 +37,8 @@ export default (state = INITIAL_STATE, action) => {
 			return { ...state, noSources: action.payload};
 		case SET_SAVED_SOURCES:
 			return { ...state, selectedSources: action.payload};
+		case SOURCES_LOADED_FROM_MEMORY:
+			return { ...state, loadFromMemory: action.payload};
 		default:
 			return state;
 	}

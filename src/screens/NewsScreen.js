@@ -25,7 +25,7 @@ class NewsScreen extends Component {
 	handleRefresh = () => {
 		if(this.props.selectedSources === null || this.props.selectedSources.length === 0) {
 			this.props.setNoSources(true);
-		} else {
+		} else if(this.props.loadFromMemory){
 			this.props.setRefreshingNews(true);
 			this.props.loadNews(this.props.selectedSources);
 		}
@@ -57,7 +57,7 @@ class NewsScreen extends Component {
 						}
 					}}
 					onRefresh={this.handleRefresh}
-					refreshing={this.props.refreshingNews}
+					refreshing={this.props.refreshingNews || this.props.loadFromMemory}
 					onEndReachedThreshold={50}
 				/>
 			</View>
@@ -67,8 +67,8 @@ class NewsScreen extends Component {
 
 const mapStateToProps = (state) => {
 	const {articles, refreshingNews, } = state.news;
-	const { selectedSources, noSources, } = state.source;
-	return { articles, refreshingNews, selectedSources, noSources,};
+	const { selectedSources, noSources, loadFromMemory} = state.source;
+	return { articles, refreshingNews, selectedSources, noSources, loadFromMemory};
 };
 
 const styles = {

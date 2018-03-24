@@ -10,5 +10,6 @@ export const ON_CLICKED_SOURCES = 'on_clicked_sources';
 export const SET_SOURCES_FROM_STORAGE = 'set_sources_from_storage';
 export const SET_NO_SOURCES = 'set_no_sources';
 export const SET_SAVED_SOURCES = 'set_saved_sources';
+export const SOURCES_LOADED_FROM_MEMORY = 'sources_loaded_from_memory';
 
 export const SAVE_KEY_SOURCES= 'save_key_sources';

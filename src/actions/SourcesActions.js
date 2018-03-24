@@ -1,6 +1,6 @@
 import {
 	LOAD_SOURCES, ON_CLICKED_SOURCES, SEARCH_SOURCES_RESULT, SET_ERRORED_SOURCES, SET_NO_SOURCES,
-	SET_REFRESHING_SOURCES, SET_SAVED_SOURCES
+	SET_REFRESHING_SOURCES, SET_SAVED_SOURCES, SOURCES_LOADED_FROM_MEMORY
 
 } from "./types";
 import * as axios from "axios";
@@ -23,7 +23,7 @@ export const setSourcesFetchErrored = (value) => {
 export const getSources = () => {
 	return (dispatch) => {
 		dispatch({ type: SET_REFRESHING_SOURCES, payload: true});
-		console.log('API_KEY', API_KEY);
+		console.log('key', API_KEY);
 		axios.get(`https://newsapi.org/v2/sources?apiKey=${API_KEY}&language=en`)
 			.then((response) => onFetchSuccess(response, dispatch))
 			.catch(() => onFetchFailed(dispatch));
@@ -102,5 +102,12 @@ export const setSavedSources = (sources) => {
 		type: SET_SAVED_SOURCES,
 		payload: sources
 	}
+};
+
+export const sourcesLoadedFromMemory = (value) => {
+	return {
+		type: SOURCES_LOADED_FROM_MEMORY,
+		payload: value
+	};
 };
 
